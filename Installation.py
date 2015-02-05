@@ -3,15 +3,17 @@ import sqlite3
 
 class Installation :
 
-	def __init__ (self, Insnom, InsNumeroInstall, ComLib, ComInsee, InsCodePostal):
+	def __init__ (self, InsNumeroInstall, ComLib, ComInsee, InsCodePostal):
+		"""
 		self.Insnom = Insnom
+		"""
 		self.InsNumeroInstall = InsNumeroInstall
 		self.ComLib = ComLib
 		self.ComInsee = ComInsee
 		self.InsCodePostal = InsCodePostal
 
 	def __repr__ (self):
-		"{} - {} - {} - {} - {}".format(self.Insnom, self.InsNumeroInstall, self.ComLib, self.ComInsee, self.InsCodePostal)
+		"{} - {} - {} - {}".format(self.InsNumeroInstall, self.ComLib, self.ComInsee, self.InsCodePostal)
 
 	@property
 	def getInsnom(self):
@@ -33,7 +35,35 @@ class Installation :
 	def getInsCodePostal(self):
 		return str(self.InsCodePostal)
 
+"""
+traffic = json.load(open(installations.json))
+traffic["data"]
 
+
+columms = ['Insnom', 'InsNumeroInstall', 'ComLib', 'ComInsee', 'InsCodePostal']
+for timestamp, data in traffic.iteritems():
+	inst = Installation(data[1], data[2], data
+	print inst
+
+
+traffic = json.load(open("installations.json"))
+traffic["data"]
+
+for item in traffic["data"]:
+	print(item["ComInsee"])
+	
+"""
+
+traffic = json.load(open("installations.json"))
+traffic["data"]
+
+for item in traffic["data"]:
+	inst = Installation(item["InsNumeroInstall"], item["ComLib"], item["ComInsee"], item["InsCodePostal"])
+	print (inst)
+	
+
+
+"""
 conn = sqlite3.connect('installations.db')
 
 c = conn.cursor()
@@ -44,4 +74,6 @@ c.execute('''CREATE TABLE installations
 
 conn.commit()
 conn.close()
+"""
+
 

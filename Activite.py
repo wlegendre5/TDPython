@@ -26,3 +26,5 @@ class Activite :
 	@property
 	def getActCode(self):
 		return str(self.ActCode)
+
+
