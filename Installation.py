@@ -15,6 +15,9 @@ class Installation :
 	def __repr__ (self):
 		"{} - {} - {} - {}".format(self.InsNumeroInstall, self.ComLib, self.ComInsee, self.InsCodePostal)
 
+	def __str__(self): 
+		return self.InsNumeroInstall+" | "+self.ComLib+" | "+self.ComInsee+" | "+self.InsCodePostal
+
 	@property
 	def getInsnom(self):
 		return str(self.Insnom)
@@ -35,6 +38,33 @@ class Installation :
 	def getInsCodePostal(self):
 		return str(self.InsCodePostal)
 
+
+def parseJSon(FileName):
+	#On charge le fichier JSON
+	traffic = json.load(open(FileName))
+	traffic["data"]
+	tab = []
+
+	#Afficher le premier element
+	#print(traffic["data"][0])
+
+	#On parcourt le fichier JSON à l'aide d'une boucle
+	for item in traffic["data"]:
+		tab.append(
+			Installation(item["InsNumeroInstall"],
+					     item["ComLib"],
+					     item["ComInsee"],
+					     item["InsCodePostal"])
+		)
+	
+	return tab
+
+
+parseJSon("installations.json")
+
+
+
+
 """
 traffic = json.load(open(installations.json))
 traffic["data"]
@@ -53,7 +83,7 @@ for item in traffic["data"]:
 	print(item["ComInsee"])
 	
 """
-
+"""
 traffic = json.load(open("installations.json"))
 traffic["data"]
 
@@ -61,7 +91,7 @@ for item in traffic["data"]:
 	inst = Installation(item["InsNumeroInstall"], item["ComLib"], item["ComInsee"], item["InsCodePostal"])
 	print (inst)
 	
-
+"""
 
 """
 conn = sqlite3.connect('installations.db')
