@@ -1,26 +1,23 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import json
-import sqlite3
+import codecs
 
 class Installation :
 
-	def __init__ (self, InsNumeroInstall, ComLib, ComInsee, InsCodePostal):
-		"""
-		self.Insnom = Insnom
-		"""
+	def __init__ (self, InsNumeroInstall, ComLib, ComInsee):
+
 		self.InsNumeroInstall = InsNumeroInstall
 		self.ComLib = ComLib
 		self.ComInsee = ComInsee
-		self.InsCodePostal = InsCodePostal
+
 
 	def __repr__ (self):
-		"{} - {} - {} - {}".format(self.InsNumeroInstall, self.ComLib, self.ComInsee, self.InsCodePostal)
+		"{} - {} - {}".format(self.InsNumeroInstall, self.ComLib, self.ComInsee)
 
 	def __str__(self): 
-		return self.InsNumeroInstall+" | "+self.ComLib+" | "+self.ComInsee+" | "+self.InsCodePostal
-
-	@property
-	def getInsnom(self):
-		return str(self.Insnom)
+		return self.InsNumeroInstall+" | "+self.ComLib+" | "+self.ComInsee
 
 	@property
 	def getInsNumeroInstall(self):
@@ -34,76 +31,17 @@ class Installation :
 	def getComInsee(self):
 		return str(self.ComInsee)
 
-	@property
-	def getInsCodePostal(self):
-		return str(self.InsCodePostal)
+	def SQLcreate(self):
+		return "CREATE TABLE installation (InsNumeroInstall integer, ComLib varchar, ComInsee integer)"
+
+	def SQLinsert(self):
+		return "INSERT INTO installation VALUES({}, {}, {})".format(self.InsNumeroInstall, "\""+self.ComLib+"\"", self.ComInsee)
 
 
-def parseJSon(FileName):
-	#On charge le fichier JSON
-	traffic = json.load(open(FileName))
-	traffic["data"]
-	tab = []
-
-	#Afficher le premier element
-	#print(traffic["data"][0])
-
-	#On parcourt le fichier JSON à l'aide d'une boucle
-	for item in traffic["data"]:
-		tab.append(
-			Installation(item["InsNumeroInstall"],
-					     item["ComLib"],
-					     item["ComInsee"],
-					     item["InsCodePostal"])
-		)
-	
-	return tab
-
-
-parseJSon("installations.json")
-
-
-
-
-"""
-traffic = json.load(open(installations.json))
-traffic["data"]
-
-
-columms = ['Insnom', 'InsNumeroInstall', 'ComLib', 'ComInsee', 'InsCodePostal']
-for timestamp, data in traffic.iteritems():
-	inst = Installation(data[1], data[2], data
-	print inst
-
-
-traffic = json.load(open("installations.json"))
-traffic["data"]
-
-for item in traffic["data"]:
-	print(item["ComInsee"])
-	
-"""
-"""
-traffic = json.load(open("installations.json"))
-traffic["data"]
-
-for item in traffic["data"]:
-	inst = Installation(item["InsNumeroInstall"], item["ComLib"], item["ComInsee"], item["InsCodePostal"])
-	print (inst)
-	
-"""
-
-"""
-conn = sqlite3.connect('installations.db')
-
-c = conn.cursor()
-
-c.execute("DROP TABLE IF EXISTS installations")
-c.execute('''CREATE TABLE installations
-             (Insnom text, InsNumeroInstall text, ComLib text, ComInsee text, InsCodePostal text)''')
-
-conn.commit()
-conn.close()
-"""
-
-
+def parseJson(json_file):
+	installations = []
+	json_data = codecs.open(json_file, encoding="utf-8").read()
+	data = json.loads(json_data)
+	for item in data["data"]:
+		installations.append(Installation(item["InsNumeroInstall"], item["ComLib"], item["ComInsee"]))
+	return installations
